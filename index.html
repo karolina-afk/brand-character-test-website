@@ -1,126 +1,281 @@
-import React, { useState } from 'react';
-import { Sparkles } from 'lucide-react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Your Brand Character</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-black: #000000;
+            --card-bg: #111111;
+            --text-gray: #9ca3af;
+            --accent-white: #ffffff;
+        }
 
-// Scenario Data Configuration
-const scenariosData = [
-  { 
-    id: 1, 
-    image: "https://raw.githubusercontent.com/karolina-afk/branding-workshop-assets-v3/main/Gemini_Generated_Image_30pfqg30pfqg30pf.png",
-    setup: "A workshop you facilitated didn't land well; the participants felt the research was too dense and they didn't feel \"connected.\"",
-    task: "Write a 3-sentence statement that shows how your brand responds to criticism."
-  },
-  { 
-    id: 2, 
-    image: "https://raw.githubusercontent.com/karolina-afk/branding-workshop-assets-v3/main/Gemini_Generated_Image_9mz81t9mz81t9mz8.png",
-    setup: "Your research findings are being misused and wrongly interpreted by another organisation. Your brand's reputation is at risk.",
-    task: "Write a 3-sentence statement that defends your brand's integrity and corrects the narrative."
-  },
-  { 
-    id: 3, 
-    image: "https://raw.githubusercontent.com/karolina-afk/branding-workshop-assets-v3/main/Gemini_Generated_Image_f0168cf0168cf016.png",
-    setup: "You're seated next to your potential dream client at an executive dinner party.",
-    task: "Craft a 3-sentence introduction that reflects your brand's unique positioning and what sets you apart."
-  },
-  { 
-    id: 4, 
-    image: "https://raw.githubusercontent.com/karolina-afk/branding-workshop-assets-v3/main/Gemini_Generated_Image_po3h87po3h87po3h.png",
-    setup: "Your company has received a major industry award.",
-    task: "Write a 3-sentence acceptance speech that reveals what your brand truly values."
-  },
-  { 
-    id: 5, 
-    image: "https://raw.githubusercontent.com/karolina-afk/branding-workshop-assets-v3/main/Gemini_Generated_Image_s3e0u3s3e0u3s3e0.png",
-    setup: "You are seated next to a high-powered executive who believes \"values in leadership\" is just a buzzword. They ask what you do.",
-    task: "Write a 3-sentence rebuttal that articulates why your brand believes this matter."
-  }
-];
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
-// Individual Scenario Card Component
-const ScenarioCard = ({ data }) => {
-  const [isFlipped, setIsFlipped] = useState(false);
+        body {
+            background-color: var(--bg-black);
+            color: var(--accent-white);
+            min-height: 100vh;
+            padding: 3rem 2rem;
+            overflow-x: hidden;
+        }
 
-  return (
-    <div className="flex flex-col items-center flex-shrink-0">
-      <h2 className="text-lg font-semibold mb-4 text-white tracking-wide">
-        Scenario {data.id}
-      </h2>
+        ::selection {
+            background: var(--accent-white);
+            color: var(--bg-black);
+        }
 
-      <div 
-        className="relative w-56 h-64 sm:w-64 sm:h-72 cursor-pointer group"
-        style={{ perspective: '1000px' }}
-        onClick={() => setIsFlipped(!isFlipped)}
-      >
-        <div 
-          className="w-full h-full relative transition-transform duration-700 ease-in-out"
-          style={{ 
-            transformStyle: 'preserve-3d',
-            transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)'
-          }}
-        >
-          {/* FRONT */}
-          <div 
-            className="absolute inset-0 w-full h-full rounded-2xl border border-gray-800 bg-gray-900 flex flex-col items-center justify-center transition-all duration-300 group-hover:border-white overflow-hidden"
-            style={{ backfaceVisibility: 'hidden' }}
-          >
-            <div className="absolute inset-0 rounded-2xl transition-shadow duration-300 group-hover:shadow-[0_0_50px_rgba(255,255,255,0.6)] pointer-events-none z-10"></div>
-            <img 
-              src={data.image} 
-              alt={`Scenario ${data.id}`} 
-              className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105 opacity-90 group-hover:opacity-100"
-            />
-          </div>
+        /* Header Styles */
+        .header {
+            max-width: 800px;
+            margin: 0 auto 4rem auto;
+            text-align: center;
+        }
 
-          {/* BACK */}
-          <div 
-            className="absolute inset-0 w-full h-full rounded-2xl bg-white text-black p-6 flex flex-col items-center justify-center shadow-[0_0_30px_rgba(255,255,255,0.2)]"
-            style={{ 
-              backfaceVisibility: 'hidden',
-              transform: 'rotateY(180deg)'
-            }}
-          >
-            <Sparkles className="text-black mb-3 flex-shrink-0" size={24} />
-            <div className="flex flex-col gap-2 text-center overflow-y-auto">
-              <p className="text-gray-800 text-sm leading-relaxed">
-                {data.setup}
-              </p>
-              <p className="text-black text-sm font-bold">
-                {data.task}
-              </p>
+        .header h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .header p {
+            color: var(--text-gray);
+            font-size: 1.125rem;
+            font-weight: 300;
+            letter-spacing: 0.025em;
+        }
+
+        /* Scenarios Container */
+        .scenarios-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 3rem;
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+
+        .scenarios-wrapper::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, Opera */
+        }
+
+        .scenarios-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            min-width: max-content;
+            padding: 0 3rem;
+            margin: 0 auto;
+        }
+
+        /* Card Component */
+        .scenario-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .scenario-number {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            letter-spacing: 0.05em;
+        }
+
+        .card-perspective {
+            width: 16rem; /* 256px approx */
+            height: 18rem; /* 288px approx */
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        /* The Flip Logic */
+        .card-perspective.is-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        /* Front Side */
+        .card-front {
+            background-color: var(--card-bg);
+            border: 1px solid #1f2937;
+            transition: border-color 0.3s ease;
+        }
+
+        .card-front:hover {
+            border-color: var(--accent-white);
+        }
+
+        /* Glow effect on hover */
+        .card-perspective:hover .card-front::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .card-front img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+            opacity: 0.9;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+
+        .card-perspective:hover .card-front img {
+            transform: scale(1.05);
+            opacity: 1;
+        }
+
+        /* Back Side */
+        .card-back {
+            background-color: var(--accent-white);
+            color: var(--bg-black);
+            transform: rotateY(180deg);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .sparkle-icon {
+            margin-bottom: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .content-scroll {
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .setup-text {
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #1f2937;
+        }
+
+        .task-text {
+            font-size: 0.875rem;
+            font-weight: 800;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 640px) {
+            .card-perspective {
+                width: 14rem;
+                height: 16rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>Test Your Brand Character</h1>
+        <p>Click the image to view the full scenario prompt</p>
+    </header>
+
+    <main class="scenarios-wrapper">
+        <div class="scenarios-container" id="scenarios-grid">
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+    </main>
 
-export default function App() {
-  return (
-    <div className="min-h-screen bg-black text-white py-12 px-8 font-sans selection:bg-white selection:text-black">
-      {/* CSS to hide scrollbar while keeping functionality */}
-      <style>{`
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `}</style>
+    <script>
+        const scenariosData = [
+            { 
+                id: 1, 
+                image: "https://raw.githubusercontent.com/karolina-afk/branding-workshop-assets-v3/main/Gemini_Generated_Image_30pfqg30pfqg30pf.png",
+                setup: "A workshop you facilitated didn't land well; the participants felt the research was too dense and they didn't feel \"connected.\"",
+                task: "Write a 3-sentence statement that shows how your brand responds to criticism."
+            },
+            { 
+                id: 2, 
+                image: "https://raw.githubusercontent.com/karolina-afk/branding-workshop-assets-v3/main/Gemini_Generated_Image_9mz81t9mz81t9mz8.png",
+                setup: "Your research findings are being misused and wrongly interpreted by another organisation. Your brand's reputation is at risk.",
+                task: "Write a 3-sentence statement that defends your brand's integrity and corrects the narrative."
+            },
+            { 
+                id: 3, 
+                image: "https://raw.githubusercontent.com/karolina-afk/branding-workshop-assets-v3/main/Gemini_Generated_Image_f0168cf0168cf016.png",
+                setup: "You're seated next to your potential dream client at an executive dinner party.",
+                task: "Craft a 3-sentence introduction that reflects your brand's unique positioning and what sets you apart."
+            },
+            { 
+                id: 4, 
+                image: "https://raw.githubusercontent.com/karolina-afk/branding-workshop-assets-v3/main/Gemini_Generated_Image_po3h87po3h87po3h.png",
+                setup: "Your company has received a major industry award.",
+                task: "Write a 3-sentence acceptance speech that reveals what your brand truly values."
+            },
+            { 
+                id: 5, 
+                image: "https://raw.githubusercontent.com/karolina-afk/branding-workshop-assets-v3/main/Gemini_Generated_Image_s3e0u3s3e0u3s3e0.png",
+                setup: "You are seated next to a high-powered executive who believes \"values in leadership\" is just a buzzword. They ask what you do.",
+                task: "Write a 3-sentence rebuttal that articulates why your brand believes this matter."
+            }
+        ];
 
-      {/* Header Section */}
-      <div className="max-w-4xl mx-auto text-center mb-16">
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 tracking-tight text-white">
-          Test Your Brand Character
-        </h1>
-        <p className="text-base md:text-lg text-gray-400 font-light tracking-wide">
-          Click the image to view the full scenario prompt
-        </p>
-      </div>
+        const container = document.getElementById('scenarios-grid');
 
-      {/* Scenarios Row */}
-      <div className="w-full overflow-x-auto hide-scrollbar pb-12">
-        <div className="flex flex-nowrap justify-center gap-8 min-w-max mx-auto px-12">
-          {scenariosData.map((scenario) => (
-            <ScenarioCard key={scenario.id} data={scenario} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+        // Create the HTML for each card
+        scenariosData.forEach(data => {
+            const cardMarkup = `
+                <div class="scenario-item">
+                    <h2 class="scenario-number">Scenario ${data.id}</h2>
+                    <div class="card-perspective" onclick="this.classList.toggle('is-flipped')">
+                        <div class="card-inner">
+                            <div class="card-front">
+                                <img src="${data.image}" alt="Scenario ${data.id}">
+                            </div>
+                            <div class="card-back">
+                                <svg class="sparkle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                                    <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
+                                </svg>
+                                <div class="content-scroll">
+                                    <p class="setup-text">${data.setup}</p>
+                                    <p class="task-text">${data.task}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += cardMarkup;
+        });
+    </script>
+</body>
+</html>
