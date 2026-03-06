@@ -3,98 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Your Brand Character</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Brand Character Exploration</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --bg-black: #000000;
-            --card-bg: #111111;
-            --text-gray: #9ca3af;
-            --accent-white: #ffffff;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-
         body {
-            background-color: var(--bg-black);
-            color: var(--accent-white);
-            min-height: 100vh;
-            padding: 3rem 2rem;
-            overflow-x: hidden;
+            background-color: black;
+            color: white;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
         }
 
-        ::selection {
-            background: var(--accent-white);
-            color: var(--bg-black);
-        }
-
-        /* Header Styles */
-        .header {
-            max-width: 800px;
-            margin: 0 auto 4rem auto;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            font-weight: 800;
-            letter-spacing: -0.05em;
-            margin-bottom: 1rem;
-        }
-
-        .header p {
-            color: var(--text-gray);
-            font-size: 1.125rem;
-            font-weight: 300;
-            letter-spacing: 0.025em;
-        }
-
-        /* Scenarios Container */
-        .scenarios-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            padding-bottom: 3rem;
-            -ms-overflow-style: none; /* IE and Edge */
-            scrollbar-width: none; /* Firefox */
-        }
-
-        .scenarios-wrapper::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, Opera */
-        }
-
-        .scenarios-container {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            min-width: max-content;
-            padding: 0 3rem;
-            margin: 0 auto;
-        }
-
-        /* Card Component */
-        .scenario-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .scenario-number {
-            font-size: 1.125rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            letter-spacing: 0.05em;
-        }
-
-        .card-perspective {
-            width: 16rem; /* 256px approx */
-            height: 18rem; /* 288px approx */
-            perspective: 1000px;
-            cursor: pointer;
+        /* Card Flip Animation Logic */
+        .card-container {
+            perspective: 1200px;
         }
 
         .card-inner {
@@ -103,10 +23,10 @@
             height: 100%;
             transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
             transform-style: preserve-3d;
+            cursor: pointer;
         }
 
-        /* The Flip Logic */
-        .card-perspective.is-flipped .card-inner {
+        .card-container.is-flipped .card-inner {
             transform: rotateY(180deg);
         }
 
@@ -116,103 +36,42 @@
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
-            border-radius: 1rem;
-            overflow: hidden;
+            border-radius: 1.5rem; /* 24px */
         }
 
-        /* Front Side */
-        .card-front {
-            background-color: var(--card-bg);
-            border: 1px solid #1f2937;
-            transition: border-color 0.3s ease;
-        }
-
-        .card-front:hover {
-            border-color: var(--accent-white);
-        }
-
-        /* Glow effect on hover */
-        .card-perspective:hover .card-front::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 1rem;
-            box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
-            pointer-events: none;
-            z-index: 10;
-        }
-
-        .card-front img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: top;
-            opacity: 0.9;
-            transition: transform 0.5s ease, opacity 0.5s ease;
-        }
-
-        .card-perspective:hover .card-front img {
-            transform: scale(1.05);
-            opacity: 1;
-        }
-
-        /* Back Side */
         .card-back {
-            background-color: var(--accent-white);
-            color: var(--bg-black);
             transform: rotateY(180deg);
-            padding: 1.5rem;
+            background-color: white;
+            color: black;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 2.5rem;
             text-align: center;
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
         }
 
-        .sparkle-icon {
-            margin-bottom: 0.75rem;
-            flex-shrink: 0;
-        }
-
-        .content-scroll {
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .setup-text {
-            font-size: 0.875rem;
-            line-height: 1.5;
-            color: #1f2937;
-        }
-
-        .task-text {
-            font-size: 0.875rem;
-            font-weight: 800;
-        }
-
-        /* Mobile Adjustments */
-        @media (max-width: 640px) {
-            .card-perspective {
-                width: 14rem;
-                height: 16rem;
-            }
+        /* Hover effects */
+        .group:hover .card-glow {
+            box-shadow: 0 0 60px rgba(255, 255, 255, 0.4);
         }
     </style>
 </head>
-<body>
+<body class="selection:bg-white selection:text-black">
 
-    <header class="header">
-        <h1>Test Your Brand Character</h1>
-        <p>Click the image to view the full scenario prompt</p>
-    </header>
+    <div class="min-h-screen py-16 px-8 flex flex-col items-center">
+        <div class="max-w-4xl text-center mb-16">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight">
+                Test Your Brand Character
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 font-light tracking-wide">
+                Click an image to view the full scenario prompt
+            </p>
+        </div>
 
-    <main class="scenarios-wrapper">
-        <div class="scenarios-container" id="scenarios-grid">
+        <div id="cards-grid" class="flex flex-wrap justify-center gap-12 w-full max-w-7xl">
             </div>
-    </main>
+    </div>
 
     <script>
         const scenariosData = [
@@ -248,33 +107,34 @@
             }
         ];
 
-        const container = document.getElementById('scenarios-grid');
+        const grid = document.getElementById('cards-grid');
 
-        // Create the HTML for each card
         scenariosData.forEach(data => {
-            const cardMarkup = `
-                <div class="scenario-item">
-                    <h2 class="scenario-number">Scenario ${data.id}</h2>
-                    <div class="card-perspective" onclick="this.classList.toggle('is-flipped')">
-                        <div class="card-inner">
-                            <div class="card-front">
-                                <img src="${data.image}" alt="Scenario ${data.id}">
+            const cardWrapper = document.createElement('div');
+            cardWrapper.className = "flex flex-col items-center";
+            
+            cardWrapper.innerHTML = `
+                <h2 class="text-xl font-semibold mb-6 text-white tracking-wide">Scenario ${data.id}</h2>
+                <div class="card-container group w-80 h-96" onclick="this.classList.toggle('is-flipped')">
+                    <div class="card-inner">
+                        <div class="card-front border border-gray-800 bg-gray-900 overflow-hidden relative">
+                            <div class="card-glow absolute inset-0 rounded-3xl transition-shadow duration-300 pointer-events-none z-10"></div>
+                            <img src="${data.image}" alt="Scenario ${data.id}" 
+                                 class="w-full h-full object-cover object-top transition-all duration-500 scale-[1.15] group-hover:scale-[1.25] opacity-90 group-hover:opacity-100">
+                        </div>
+                        <div class="card-back shadow-[0_0_40px_rgba(255,255,255,0.2)]">
+                            <div class="mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M3 5h4"/><path d="M21 17v4"/><path d="M19 19h4"/></svg>
                             </div>
-                            <div class="card-back">
-                                <svg class="sparkle-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-                                    <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
-                                </svg>
-                                <div class="content-scroll">
-                                    <p class="setup-text">${data.setup}</p>
-                                    <p class="task-text">${data.task}</p>
-                                </div>
+                            <div class="flex flex-col gap-4 overflow-y-auto">
+                                <p class="text-gray-800 text-lg leading-relaxed">${data.setup}</p>
+                                <p class="text-black text-lg font-bold">${data.task}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
-            container.innerHTML += cardMarkup;
+            grid.appendChild(cardWrapper);
         });
     </script>
 </body>
